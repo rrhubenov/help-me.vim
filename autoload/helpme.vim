@@ -9,7 +9,7 @@ const DEBUG = 0
 var curr_dir = getcwd()
 for f in glob("~/.vim/help/*", 0, 1)
     chdir(f)
-    # Nedd to trim since every line is given with a newline at the end. Very bash
+    # Need to trim since every line is given with a newline at the end. Very bash
     # like, yes, yes
     add(g:help_plugins, trim(system("git config --get remote.origin.url")))
 endfor
@@ -26,7 +26,6 @@ export def Add(help_name: string)
     const [creator, repo] = split(help_name, "/")
     const full_help_path = g:help_path .. repo
 
-
     # Check if the help_name is already in list. This check might
     # need to be more complicated so think of it as a TODO
     if index(g:help_plugins, full_help_name) >= 0
@@ -39,15 +38,28 @@ export def Add(help_name: string)
     call system("git -C " .. g:help_path .. " clone " .. "git@github.com:" .. help_name)
     call add(g:help_plugins, full_help_name)
     call AddToRtp(full_help_path)
-    call GenHelpTagsForDir(full_help_path)
+    execute "helptags " .. full_help_path
+    SetupTagFileInDir(full_help_path)
     Debug("Successfully added " .. help_name)
 enddef
 
-def GenHelpTagsForDir(dir: string)
-    execute "helptags " .. dir
+def SetupTagFileInDir(dir: string)
+    const currentFile = expand("%")
+
+    mkdir(expand(dir) .. "/doc") 
+    rename(expand(dir) .. "/tags", expand(dir) .. "/doc/tags") 
+    silent execute "edit " .. expand(dir) .. "/doc/tags"
+
+    # Substitute "\tsomething.txt\t" with "\t../something.txt\t"
+    silent :%s/\v\t(.*\.txt)\t/\t\.\.\/\1\t/g
+    
+    silent update
+    # Return to the opened file
+    execute "silent edit " .. currentFile
 enddef
 
 def AddToRtp(path: string)
+    Debug("adding " .. path .. " to rtp")
     execute "set rtp+=" .. path
 enddef
 
