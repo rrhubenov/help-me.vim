@@ -5,8 +5,6 @@ vim9script noclear
 # Mainainer:   Radoslav Hubenov <rrhubenov@gmail.com>
 # License:     This file is placed in the public domain.
 
-
-
 if exists("g:loaded_help_me")
     finish
 endif
