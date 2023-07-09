@@ -1,0 +1,38 @@
+*help-me.txt*  Plugin for managing help plugins
+
+Author:  Radoslav Hubenov 
+License: Same terms as Vim itself (see |license|)
+
+INTRODUCTION                                    *help-me*
+
+Vim help is a powerful tool. This plugin allows you to install
+collections of help files that are hosted on github.
+Also adds some sensible mappings for easily navigating help files.
+
+MAPPINGS                                        *help-me-mappings*
+
+<CR> will jump to the help tag under the cursor.
+<BS> will pop the last tag from the stack and jump back to it.
+
+COMMANDS                                        *help-me-commands*
+
+*HelpAdd* adds a repo for installation in the list of plugins.
+
+*HelpInstall* installs the plugins in the list of plugins that
+were added using |HelpAdd|
+
+*HelpShow* shows the contents of the list of help plugins
+that were added using |HelpAdd|
+
+*HelpClean* removes plugins from the help dir that are not
+in the list of plugins.
+
+*HelpSync* sync the installed plugins on the filesystem
+with the list of plugins that were added using |HelpAdd|
+
+*HelpList* open a buffer that will show you the available
+help files. Jump to them using <BS>
+
+*HelpNew* create a new local help file in the directory
+of local help projects. By default this is
+"~/.vim/help_local".
